@@ -46,7 +46,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           data: ratings
         })
       });
-
     },
     clientLogLevel: 'warning',
     historyApiFallback: {
