@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -18,8 +18,35 @@
 
 <script>
 import header from '@/components/header/header.vue'
+import axios from 'axios'
+const ERR_OK = 0
 export default {
   name: 'App',
+  data(){
+    return {
+      seller: {
+        
+      }
+    }
+  },
+  created() {
+      // this.$http.get('api/seller').then((response) => {
+      //   response = response.body;
+      //   console.log(response)
+      // });
+
+      // 获取header组件的数据
+      axios.get('api/seller').then((response) => {
+        response = response.data;
+        // console.log(response);
+        if(response.errno === ERR_OK){
+          this.seller = response.data;
+          // console.log(this.seller)
+          // console.log(this.seller.avatar)
+        }
+        // console.log(response)
+      })
+  },
   components: {
    "v-header": header,
   }
@@ -27,13 +54,15 @@ export default {
 </script>
 
 <style lang="stylus">
+  @import './common/stylus/mixin.styl'
+
   #app
     .tab
       display flex
       width 100%
       height 40px
       line-height 40px
-      border-bottom 1px solid rgba(7,17,27,0.1)
+      border-1px(rgba(7,17,27,0.1))
       .tab-item
         flex 1
         text-align center
