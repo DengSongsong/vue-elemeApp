@@ -20,14 +20,14 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## 20170202
+## 20170201
 
 ### 项目资源准备
 1. 图标字体制作，使用iconfont [fonts](https://github.com/DengSongsong/vue-elemeApp/tree/master/src/common/fonts)
 2. mock数据，模拟后台数据 [data.json](https://github.com/DengSongsong/vue-elemeApp/blob/master/data.json)
 3. [移动端（手机）实现1像素下边框的方法](https://segmentfault.com/a/1190000004538413)
 
-### 20170203
+### 20170202
 
 ### header组件开发
 1. 使用axios获取远程数据,踩了点小坑，开始时以为数据获取到了，数据绑定页面时，结果数据没有出来，还以为vue的语法写错了，后来才发现异步获取请求时使用的参数重复，混淆了。
@@ -50,3 +50,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 8. CSS3 filter
 9. CSS sticky footers布局
 10. 清除浮动
+
+### 20170203
+
+### header组件开发
+1. star组件完成
+2. flex布局
+3. vue transition
+4. backdrop-filter: blur()
