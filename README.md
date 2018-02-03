@@ -53,8 +53,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### 20170203
 
-### header组件开发
+### header组件开发 && goods组件开发
 1. star组件完成
 2. flex布局
 3. vue transition
 4. backdrop-filter: blur()
+5. vue生命周期函数created()使用场景
+5. display:table 解决垂直居中问题
