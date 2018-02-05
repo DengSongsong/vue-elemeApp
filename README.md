@@ -62,7 +62,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 5. display:table 解决垂直居中问题
 
 ## 20170205
-### goods组件开发
+### goods组件开发 && shopcart组件开发
 1. vue nextTick()使用场景
 2. vue ref
 3. better-scroll js库的使用

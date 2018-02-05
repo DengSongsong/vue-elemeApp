@@ -37,11 +37,13 @@
         </li>
       </ul>
     </div>
+    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
   </div>
 </template>
 <script>
 import axios from 'axios'
 import BScroll from 'better-scroll'
+import shopcart from '@/components/shopcart/shopcart.vue';
 const ERR_OK = 0;
 export default {
   props: {
@@ -144,6 +146,9 @@ export default {
       // 滚动到指定的目标元素
       this.foodsScroll.scrollToElement(el, 300);
     }
+  },
+  components: {
+    shopcart
   }
 }
 </script>
