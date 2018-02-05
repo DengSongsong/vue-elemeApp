@@ -27,7 +27,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 2. mock数据，模拟后台数据 [data.json](https://github.com/DengSongsong/vue-elemeApp/blob/master/data.json)
 3. [移动端（手机）实现1像素下边框的方法](https://segmentfault.com/a/1190000004538413)
 
-### 20170202
+## 20170202
 
 ### header组件开发
 1. 使用axios获取远程数据,踩了点小坑，开始时以为数据获取到了，数据绑定页面时，结果数据没有出来，还以为vue的语法写错了，后来才发现异步获取请求时使用的参数重复，混淆了。
@@ -51,7 +51,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 9. CSS sticky footers布局
 10. 清除浮动
 
-### 20170203
+## 20170203
 
 ### header组件开发 && goods组件开发
 1. star组件完成
@@ -60,3 +60,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 4. backdrop-filter: blur()
 5. vue生命周期函数created()使用场景
 5. display:table 解决垂直居中问题
+
+## 20170205
+### goods组件开发
+1. vue nextTick()使用场景
+2. vue ref
+3. better-scroll js库的使用

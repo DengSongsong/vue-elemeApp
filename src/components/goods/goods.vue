@@ -1,17 +1,19 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <!-- 左侧菜单栏 -->
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(item) in goods" :key="item.index" class="menu-item">
+        <li v-for="(item, index) in goods" :key="item.index" class="menu-item" :class="{'current':currentIdedx===index}" @click="selectMenu(index)">
           <span class="text">
             <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <!-- 右侧商品展示 -->
+    <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
-        <li v-for="item in goods" :key="item.index" class="food-list">
+        <li v-for="item in goods" :key="item.index" class="food-list" ref="foodList">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="item in item.foods" :key="item.index" class="food-item">
@@ -39,6 +41,7 @@
 </template>
 <script>
 import axios from 'axios'
+import BScroll from 'better-scroll'
 const ERR_OK = 0;
 export default {
   props: {
@@ -49,6 +52,27 @@ export default {
   data() {
     return{
       goods: [],
+      // 每一类型(li class="food-list")的所占长度(区间)存入该数组中
+      listHeight: [],
+      // 实时监控右侧栏滚动时y轴方向的位置，初始化为0
+      scrollY: 0
+    }
+  },
+  computed: {
+    // 左侧栏菜单的索引与右侧栏的scrollY的值做映射，使之分类对应起来
+    currentIdedx(){
+      for(let i = 0; i < this.listHeight.length; i++){
+        // 当前索引高度(当前的菜单分类的开始的高度)
+        let height1 = this.listHeight[i];
+        // 下一个索引高度(当前的菜单分类结束时的高度即下一个分类开始时的高度)
+        let height2 = this.listHeight[i + 1];
+        // 如果右侧栏滚动到了最下面(最后一个分类),height2不存在 || 当前滚动到(scrollY)某一个分类的区间中
+        if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)){
+          // 返回当前菜单分类的索引值
+          return i
+        }
+      }
+      return 0;
     }
   },
   created() {
@@ -59,9 +83,67 @@ export default {
         // console.log(response);
         if(response.errno === ERR_OK){
           this.goods = response.data;
-          console.log(this.goods[0].foods[0].icon)
+          // console.log(this.goods[0].foods[0].icon)
+
+          // 数据更新及dom更新是异步的，如需要操作dom需要dom更新完成
+          this.$nextTick(() => {
+            this._initScroll();
+            this._calculateHeight();
+          })
         }
       })
+  },
+  methods: {
+    // 菜单栏及商品栏产生滚动效果
+    _initScroll() {
+      // 菜单栏滚动
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+        // better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，better-scroll 会派发一个 click 事件，
+        // 我们会给派发的 event 参数加一个私有属性 _constructed，值为 true。
+        click: true
+      });
+      // console.log(this.$refs.menuWrapper);
+      // 商品栏滚动
+      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+        // 在屏幕滑动的过程中，
+        // 且在 momentum 滚动动画运行过程中实时派发 scroll 事件
+        // scroll事件：实时监控滚动时坐标
+        probeType: 3
+      });
+      // 右侧栏派发scroll事件
+      this.foodsScroll.on('scroll', (pos) => {
+        // 判断滑动方向，避免下拉时分类高亮错误（如第一分类商品数量为1时，下拉使得第二分类高亮）
+        if(pos.y <= 0){
+          this.scrollY = Math.abs(Math.round(pos.y));
+        }
+      })
+
+    },
+    // 计算每个li(class="food-list")的长度，并存入数组listHeight中
+    _calculateHeight() {
+      // 获取全部的ref:foodList元素<li></li>
+      // 数组
+      let foodList = this.$refs.foodList;
+      // console.log(foodList);
+      let height = 0;
+      this.listHeight.push(height);
+      for(let i = 0; i < foodList.length; i++){
+        let item = foodList[i];
+        // console.log(item);
+        height += item.clientHeight;
+        // console.log(height);
+        this.listHeight.push(height);
+      }
+      // console.log(this.listHeight);
+    },
+    // 左侧栏菜单点击
+    selectMenu(index) {
+      // console.log(index);
+      let foodList = this.$refs.foodList;
+      let el = foodList[index];
+      // 滚动到指定的目标元素
+      this.foodsScroll.scrollToElement(el, 300);
+    }
   }
 }
 </script>
@@ -84,6 +166,14 @@ export default {
         width 56px
         line-height 14px
         padding 0 12px
+        &.current
+          position: relative
+          z-index: 10
+          margin-top: -1px
+          background: #fff
+          font-weight: 700
+          .text
+            border-none()
         .icon
           display: inline-block
           vertical-align: top
