@@ -66,3 +66,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 1. vue nextTick()使用场景
 2. vue ref
 3. better-scroll js库的使用
+
+## 20170206
+### shopcart组件开发
