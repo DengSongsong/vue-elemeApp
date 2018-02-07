@@ -31,19 +31,25 @@
                   <span class="now">￥{{item.price}}</span>
                   <span class="old" v-show="item.oldPrice">￥{{item.oldPrice}}</span>
                 </div>
+                <!-- 选购商品 -->
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol @add="addFood" :food="item"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+    <!-- 购物车 -->
+    <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
   </div>
 </template>
 <script>
 import axios from 'axios'
 import BScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/shopcart.vue';
+import cartcontrol from '@/components/cartcontrol/cartcontrol.vue';
 const ERR_OK = 0;
 export default {
   props: {
@@ -75,6 +81,18 @@ export default {
         }
       }
       return 0;
+    },
+    // 被选中的商品
+    selectFoods() {
+      let foods = [];
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if(food.count){
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
     }
   },
   created() {
@@ -110,7 +128,8 @@ export default {
         // 在屏幕滑动的过程中，
         // 且在 momentum 滚动动画运行过程中实时派发 scroll 事件
         // scroll事件：实时监控滚动时坐标
-        probeType: 3
+        probeType: 3,
+        click: true
       });
       // 右侧栏派发scroll事件
       this.foodsScroll.on('scroll', (pos) => {
@@ -145,10 +164,25 @@ export default {
       let el = foodList[index];
       // 滚动到指定的目标元素
       this.foodsScroll.scrollToElement(el, 300);
+    },
+    addFood(target){//参数target是从子组件cartcontrol传递过来的
+      // console.log(target)
+      
+      // 拿到了想要触发小球下落(增加商品数量)的按钮元素，对其进行处理
+      // 实现小球下落的动作
+      this._drop(target);
+    },
+    // 调用shopcart组件中的drop()方法
+    _drop(target) {
+      this.$refs.shopcart.drop(target);
+      // console.log(target);
+      // console.log(this.$refs.shopcart.drop);
+      // console.log(this.$refs.shopcart.drop());
     }
   },
   components: {
-    shopcart
+    shopcart,
+    cartcontrol
   }
 }
 </script>
@@ -260,4 +294,8 @@ export default {
               text-decoration: line-through
               font-size: 10px
               color: rgb(147, 153, 159)
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 12px
 </style>

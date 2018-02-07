@@ -68,4 +68,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 3. better-scroll js库的使用
 
 ## 20170206
-### shopcart组件开发
+### shopcart组件开发 && cartcontrol组件开发
+1. Vue.set
+2. translate3d
+3. cubic-bezier()
+
+## 20170207
+### shopcart组件开发 && cartcontrol组件开发
+1. 浏览器的重绘和重排问题
