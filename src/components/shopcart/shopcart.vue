@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="shopcart">
+      <!-- 购物车栏 -->
       <div class="content" @click="toggleList">
         <div class="content-left">
             <div class="logo-wrapper">
@@ -16,6 +17,7 @@
             <div class="pay" :class="payClass">{{payDesc}}</div>
         </div>
       </div>
+      <!-- 增加数量购物车小球下落效果 -->
       <div class="ball-container">
         <div v-for="item in balls" :key="item.index">
           <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
@@ -25,6 +27,7 @@
           </transition>
         </div>
       </div>
+      <!-- 购物车栏点击被选择商品列表 -->
       <transition name="fold">
         <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
@@ -47,6 +50,7 @@
         </div>
       </transition>
     </div>
+    <!-- 购物车栏点击弹窗 -->
     <transition name="fade">
       <div class="list-mask" @click="hideList" v-show="listShow"></div>
     </transition>
@@ -149,6 +153,7 @@ export default {
                 click: true
               });
             } else {
+              // 重新计算 better-scroll，当 DOM 结构发生变化的时候务必要调用确保滚动的效果正常
               this.scroll.refresh();
             }
           });

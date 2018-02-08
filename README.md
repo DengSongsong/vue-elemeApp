@@ -76,3 +76,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## 20170207
 ### shopcart组件开发 && cartcontrol组件开发
 1. 浏览器的重绘和重排问题
+2. getBoundingClientRect()
+3. 父组件调用子组件的方法 this.$refs.shopcart.drop(target);
+
+## 20170208
+### food组件开发 && ratingselect组件开发
+1. this.$emit('toggle'); 子组件没有传参数给父组件 子组件也能得到响应

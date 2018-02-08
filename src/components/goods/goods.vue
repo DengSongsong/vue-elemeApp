@@ -1,48 +1,51 @@
 <template>
-  <div class="goods">
-    <!-- 左侧菜单栏 -->
-    <div class="menu-wrapper" ref="menuWrapper">
-      <ul>
-        <li v-for="(item, index) in goods" :key="item.index" class="menu-item" :class="{'current':currentIdedx===index}" @click="selectMenu(index)">
-          <span class="text">
-            <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
-          </span>
-        </li>
-      </ul>
+  <div>
+    <div class="goods">
+      <!-- 左侧菜单栏 -->
+      <div class="menu-wrapper" ref="menuWrapper">
+        <ul>
+          <li v-for="(item, index) in goods" :key="item.index" class="menu-item" :class="{'current':currentIdedx===index}" @click="selectMenu(index)">
+            <span class="text">
+              <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <!-- 右侧商品展示 -->
+      <div class="foods-wrapper" ref="foodsWrapper">
+        <ul>
+          <li v-for="item in goods" :key="item.index" class="food-list" ref="foodList">
+            <h1 class="title">{{item.name}}</h1>
+            <ul>
+              <li @click="selectFood(item)" v-for="item in item.foods" :key="item.index" class="food-item">
+                <div class="icon">
+                  <img :src="item.icon" width="57" height="57"/>
+                </div>
+                <div class="content">
+                  <h2 class="name">{{item.name}}</h2>
+                  <p class="desc">{{item.description}}</p>
+                  <div class="extra">
+                    <span class="count">月售{{item.sellCount}}</span>
+                    <span class="praise">好评率{{item.rating}}%</span>
+                  </div>
+                  <div class="price">
+                    <span class="now">￥{{item.price}}</span>
+                    <span class="old" v-show="item.oldPrice">￥{{item.oldPrice}}</span>
+                  </div>
+                  <!-- 选购商品 -->
+                  <div class="cartcontrol-wrapper">
+                    <cartcontrol @add="addFood" :food="item"></cartcontrol>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- 购物车 -->
+      <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
     </div>
-    <!-- 右侧商品展示 -->
-    <div class="foods-wrapper" ref="foodsWrapper">
-      <ul>
-        <li v-for="item in goods" :key="item.index" class="food-list" ref="foodList">
-          <h1 class="title">{{item.name}}</h1>
-          <ul>
-            <li v-for="item in item.foods" :key="item.index" class="food-item">
-              <div class="icon">
-                <img :src="item.icon" width="57" height="57"/>
-              </div>
-              <div class="content">
-                <h2 class="name">{{item.name}}</h2>
-                <p class="desc">{{item.description}}</p>
-                <div class="extra">
-                  <span class="count">月售{{item.sellCount}}</span>
-                  <span class="praise">好评率{{item.rating}}%</span>
-                </div>
-                <div class="price">
-                  <span class="now">￥{{item.price}}</span>
-                  <span class="old" v-show="item.oldPrice">￥{{item.oldPrice}}</span>
-                </div>
-                <!-- 选购商品 -->
-                <div class="cartcontrol-wrapper">
-                  <cartcontrol @add="addFood" :food="item"></cartcontrol>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <!-- 购物车 -->
-    <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
+    <food :food="selectedFood" @add="addFood" ref="food"></food>
   </div>
 </template>
 <script>
@@ -50,6 +53,7 @@ import axios from 'axios'
 import BScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/shopcart.vue';
 import cartcontrol from '@/components/cartcontrol/cartcontrol.vue';
+import food from '@/components/food/food.vue';
 const ERR_OK = 0;
 export default {
   props: {
@@ -63,7 +67,8 @@ export default {
       // 每一类型(li class="food-list")的所占长度(区间)存入该数组中
       listHeight: [],
       // 实时监控右侧栏滚动时y轴方向的位置，初始化为0
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     }
   },
   computed: {
@@ -178,11 +183,18 @@ export default {
       // console.log(target);
       // console.log(this.$refs.shopcart.drop);
       // console.log(this.$refs.shopcart.drop());
+    },
+    selectFood(food) {
+      this.selectedFood = food;
+      // 显示商品详情页面
+      this.$refs.food.show();
+      // console.log(this.$refs.food.show)
     }
   },
   components: {
     shopcart,
-    cartcontrol
+    cartcontrol,
+    food
   }
 }
 </script>
