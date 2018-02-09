@@ -82,3 +82,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## 20170208
 ### food组件开发 && ratingselect组件开发
 1. this.$emit('toggle'); 子组件没有传参数给父组件 子组件也能得到响应
+2. vue 过滤器
+
+## 20170209
+### food组件开发 && ratingselect组件开发
+1. 时间格式化 正则替换
