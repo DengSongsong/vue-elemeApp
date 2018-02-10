@@ -85,5 +85,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 2. vue 过滤器
 
 ## 20170209
-### food组件开发 && ratingselect组件开发
+### ratings组件开发
 1. 时间格式化 正则替换
