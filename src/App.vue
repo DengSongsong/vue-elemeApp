@@ -12,11 +12,14 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <router-view :seller="seller"/>
+    <keep-alive>
+      <router-view :seller="seller"/>
+    </keep-alive> 
   </div>
 </template>
 
 <script>
+import { urlParse } from 'common/js/util';
 import header from '@/components/header/header.vue'
 import axios from 'axios'
 const ERR_OK = 0
@@ -24,21 +27,23 @@ export default {
   name: 'App',
   data(){
     return {
-      seller: {}
+      seller: {
+        id: (() => {
+            let queryParam = urlParse();
+            // console.log(queryParam);
+            return queryParam.id;
+        })()
+      }
     }
   },
   created() {
-      // this.$http.get('api/seller').then((response) => {
-      //   response = response.body;
-      //   console.log(response)
-      // });
-
       // 获取header组件的数据
-      axios.get('api/seller').then((response) => {
+      axios.get('api/seller' + '?id=' + this.seller.id).then((response) => {
         response = response.data;
         // console.log(response);
         if(response.errno === ERR_OK){
-          this.seller = response.data;
+          // this.seller = response.data;
+          this.seller = Object.assign({}, this.seller, response.data);
           // console.log(this.seller)
           // console.log(this.seller.avatar)
         }

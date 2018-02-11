@@ -87,3 +87,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## 20170209
 ### ratings组件开发
 1. 时间格式化 正则替换
+
+## 20170210
+### seller组件开发
+1. url参数解析 正则替换
+2. 本地存储
+3. vue keep-alive
